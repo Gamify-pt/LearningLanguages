@@ -4839,7 +4839,9 @@ Reply in EXACTLY this format: three labelled lines and nothing else.
 ES: <your reply in Spanish>
 EN: <a natural English translation of your reply>
 FIX: <only if the learner's LAST message was in Spanish and had a mistake (including missing accents): the corrected sentence, then " — " and a one-sentence explanation in English. Otherwise leave FIX empty.>`;}
-try{TALK.local=JSON.parse(localStorage.getItem("vamos-local")||"null")||{url:"",model:""};}catch(e){TALK.local={url:"",model:""};}
+const DEFAULT_LOCAL={url:"https://desktop-4l0c428.tail8a4ce5.ts.net/v1",model:"qwen2.5:3b"};
+try{TALK.local=JSON.parse(localStorage.getItem("vamos-local")||"null")||{...DEFAULT_LOCAL};}catch(e){TALK.local={...DEFAULT_LOCAL};}
+if(!TALK.local.url)TALK.local={...DEFAULT_LOCAL};
 function talkEngine(){return SAMPLE?"claude":(TALK.local&&TALK.local.url?"local":(TALK.key?"key":null));}
 function engLabel(){const e=talkEngine();return e==="local"?`Using your local AI (${esc(TALK.local.model||"model")}).`:e==="key"?"Using your Anthropic API key on this device.":"Answers use your own Claude account; the first message asks for permission.";}
 // one call for every outside-Claude engine: system prompt + alternating user/assistant turns
